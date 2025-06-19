@@ -327,7 +327,7 @@
                                     onClick={e => { e.preventDefault(); navigate('analise'); }}
                                     className="mt-10 inline-block bg-cyan-400 text-black font-bold py-4 px-10 rounded-full text-lg transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 shadow-lg shadow-cyan-400/10"
                                 >
-                                    Iniciar Análise de Identidade
+                                    Iniciar Análise
                                 </a>
                             </FadeIn>
                         </div>
@@ -396,131 +396,48 @@
                 <div className="relative z-10">{children}</div>
             </section>
         );
-
-        const IdentidadePage = ({ navigate }) => {
-            const BenefitCard = ({ icon, title, text, alert = false }) => (
-                <div className={`bg-gray-900/50 p-6 rounded-2xl border h-full transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-2 ${alert ? 'border-red-500/30 hover:shadow-xl hover:shadow-red-500/10' : 'border-gray-700/50 hover:shadow-xl hover:shadow-cyan-500/10'}`}>
-                    <div className="flex items-center mb-3">
-                        <div className={`mr-4 ${alert ? 'text-red-400' : 'text-cyan-400'}`}>{icon}</div>
-                        <h4 className={`font-bold ${alert ? 'text-red-400' : 'text-white'}`}>{title}</h4>
-                    </div>
-                    <p className="text-gray-400 text-sm">{text}</p>
-                </div>
-            );
-            const IconExclusividade = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>;
-            const IconSeguranca = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>;
-            const IconFortalecimento = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>;
-            const IconExpansao = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 9.293a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L15 7.414V10a1 1 0 11-2 0V7.414l-1.293 1.293a1 1 0 01-1.414 0z" /></svg>;
-            const IconMonetizacao = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M12 18v-2m0 2v1m0 1v1m0-2.01M12 16v-1" /></svg>;
-            const IconAlerta = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
-
-            return (
-                <InternalSection>
-                    <div className="text-center">
-                        <FadeIn>
-                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Identidade & Legado</h1>
-                            <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">Arquitetamos identidades que transcendem o tempo. Construímos legados que se valorizam e perduram por gerações.</p>
-                        </FadeIn>
-                    </div>
-                    <section className="py-20 px-0">
-                        <div className="max-w-6xl mx-auto">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <FadeIn delay={0.1}><BenefitCard icon={<IconExclusividade />} title="Exclusividade de Uso" text="Garante o direito legal de uso exclusivo, evitando conflitos legais." /></FadeIn>
-                                <FadeIn delay={0.2}><BenefitCard icon={<IconSeguranca />} title="Segurança Jurídica" text="Minimiza o risco de disputas legais e infrações." /></FadeIn>
-                                <FadeIn delay={0.3}><BenefitCard icon={<IconFortalecimento />} title="Fortalecimento Institucional" text="Eleva a credibilidade e a imagem da empresa, atraindo investidores e parceiros." /></FadeIn>
-                                <FadeIn delay={0.4}><BenefitCard icon={<IconExpansao />} title="Oportunidades de Expansão" text="Possibilita licenciamento e franquias." /></FadeIn>
-                                <FadeIn delay={0.5}><BenefitCard icon={<IconMonetizacao />} title="Monetização" text="Permite gerar receita com royalties e outras formas de monetização." /></FadeIn>
-                                <FadeIn delay={0.6}><BenefitCard icon={<IconAlerta />} title="Alerta Crucial" text="Sem registro, você pode ser impedido de usar o nome que construiu com tanto esforço." alert={true} /></FadeIn>
-                            </div>
-                        </div>
-                    </section>
-                    <FadeIn>
-                      <div className="py-20 px-8 bg-gray-900/40 rounded-2xl">
-                          <div className="max-w-4xl mx-auto text-center">
-                              <h2 className="text-3xl font-bold mb-6">A Identidade como Núcleo do Legado</h2>
-                              <div className="text-gray-300 space-y-4 text-lg">
-                                  <p>No ecossistema Neotropia, a identidade é o código-fonte do legado. É o ativo intangível que ancora o valor e dita o potencial de expansão de um projeto. Em um mercado de ruído constante, a clareza e a proteção da identidade não são defensivas; são a principal estratégia ofensiva. Nós não apenas registramos marcas; nós blindamos futuros.</p>
-                              </div>
-                          </div>
-                      </div>
-                    </FadeIn>
-                    <FadeIn>
-                      <div className="text-center py-24 px-8">
-                          <h2 className="text-4xl font-bold text-white mb-4">Pronto para fundar seu legado?</h2>
-                          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">Nossa análise inicial é o primeiro passo para entender o potencial da sua identidade e mapear as oportunidades de futuro.</p>
-                          <a href="#" onClick={e => { e.preventDefault(); navigate('analise'); }} className="bg-white text-black font-bold py-4 px-10 rounded-full transition-all duration-300 ease-in-out hover:bg-cyan-400 hover:shadow-lg hover:shadow-cyan-400/20 transform hover:scale-105 inline-block">
-                              Iniciar Análise de Identidade
-                          </a>
-                      </div>
-                    </FadeIn>
-                </InternalSection>
-            );
-        };
-
-        const GenericPage = ({ title, subtitle, children }) => (
-            <InternalSection>
-              <div className="text-center">
-                <FadeIn>
-                    <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">{title}</h1>
-                    <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">{subtitle}</p>
-                </FadeIn>
-                {children && <div className="mt-12 w-full max-w-4xl mx-auto">{children}</div>}
-              </div>
-            </InternalSection>
-        );
-        const HabitatPage = () => (
-            <GenericPage
-                title="Em breve"
-                subtitle="Estamos cultivando um novo ecossistema. Retorne em breve para vivenciar mais uma experiência Neotropia."
-            />
-        );
-        const EstrategiaPage = () => (
-            <GenericPage
-                title="Em breve"
-                subtitle="Estamos cultivando um novo ecossistema. Retorne em breve para vivenciar mais uma experiência Neotropia."
-            />
-        );
-
-        const AnalisePage = () => {
-            const [formData, setFormData] = useState({ name: '', email: '', brand: '', website: '' });
+        
+        const AnalysisForm = ({ pillar = null }) => {
+            const [formData, setFormData] = useState({ name: '', email: '', phone: '', projectIdea: '' });
             const [message, setMessage] = useState(null);
             const [generatedConcept, setGeneratedConcept] = useState('');
             const [isGenerating, setIsGenerating] = useState(false);
+            const [selectedPillar, setSelectedPillar] = useState(pillar);
 
             const handleChange = (e) => setFormData({...formData, [e.target.name]: e.target.value });
 
-            const handleSubmit = async (e) => {
-                e.preventDefault();
-                setMessage({ type: 'info', text: 'Enviando análise...' });
-                setTimeout(() => {
-                    if (!formData.name || !formData.email || !formData.brand) {
-                        setMessage({ type: 'error', text: 'Dados inválidos. Por favor, preencha todos os campos obrigatórios.' });
-                    } else {
-                        setMessage({ type: 'success', text: 'Análise recebida com sucesso! Entraremos em contato em breve.' });
-                        setFormData({ name: '', email: '', brand: '', website: '' });
-                        setGeneratedConcept('');
-                    }
-                }, 1000);
+            const handleSubmit = (e) => {
+                 e.preventDefault();
+                setMessage({ type: 'success', text: `Seu interesse em ${selectedPillar} foi registrado com sucesso! Entraremos em contato em breve.` });
+                setFormData({ name: '', email: '', phone: '', projectIdea: '' });
+                setGeneratedConcept('');
+                setSelectedPillar(pillar);
             };
             
-            const handleGenerateConcept = async () => {
-                if (!formData.brand) {
-                    setMessage({ type: 'error', text: 'Por favor, insira o nome da marca para gerar um conceito.' });
+            const handlePillarClick = async (currentPillar) => {
+                if (!isFormValid) {
+                    setMessage({ type: 'error', text: 'Por favor, preencha todos os campos obrigatórios para iniciar uma análise.' });
                     return;
                 }
                 setIsGenerating(true);
                 setGeneratedConcept('');
                 setMessage(null);
+                setSelectedPillar(currentPillar);
 
-                const prompt = `
-                    Você é um estrategista de marca sênior na Neotropia, uma consultoria de ecossistemas de negócios futurista e inovadora.
-                    Sua tarefa é criar um conceito inicial inspirador para uma nova marca chamada "${formData.brand}".
-                    Este conceito deve ser conciso, poderoso e alinhado com a filosofia da Neotropia de construir legados perpétuos e ecossistemas integrados.
-                    Por favor, gere o seguinte, em português do Brasil, usando Markdown para formatação:
-                    - **Conceito da Marca:** Um parágrafo curto e impactante que define a essência da marca.
-                    - **Missão:** Uma declaração clara do propósito da marca.
-                    - **Visão:** Uma declaração aspiracional de onde a marca quer chegar no futuro.
-                `;
+                let prompt;
+                switch (currentPillar) {
+                    case 'Identidade & Legado':
+                        prompt = `Como um estrategista de marca sênior na Neotropia, crie um conceito inspirador para o seguinte projeto: "${formData.projectIdea}". Inclua Conceito da Marca, Missão e Visão. O tom deve ser futurista e alinhado à filosofia da Neotropia de construir legados.`;
+                        break;
+                    case 'Habitat & Futuro':
+                        prompt = `Como um estrategista de urbanismo na Neotropia, crie um conceito inovador para o projeto: "${formData.projectIdea}". Foque em sustentabilidade, tecnologia e bem-estar. Inclua um Conceito do Projeto, Objetivos Principais e Diferenciais.`;
+                        break;
+                    case 'Inteligência Estratégica':
+                        prompt = `Como um consultor de inteligência estratégica na Neotropia, para o projeto "${formData.projectIdea}", faça uma análise preliminar de riscos e oportunidades. Identifique 2 potenciais riscos (legais/mercadológicos) e 2 oportunidades estratégicas (blindagem/crescimento).`;
+                        break;
+                    default:
+                        prompt = `Gere um conceito geral para o projeto: "${formData.projectIdea}".`;
+                }
 
                 try {
                     let chatHistory = [];
@@ -563,41 +480,79 @@
                 error: 'bg-red-500/10 border-red-500/50 text-red-300',
                 info: 'bg-blue-500/10 border-blue-500/50 text-blue-300',
             };
+            
+            const isFormValid = formData.name && formData.email && formData.projectIdea;
+            
+            const pillarConfig = {
+                'Identidade & Legado': {
+                    buttonText: 'Explorar Identidade & Legado',
+                    borderColor: 'border-cyan-400',
+                    textColor: 'text-cyan-400',
+                    hoverBg: 'hover:bg-cyan-400',
+                },
+                'Habitat & Futuro': {
+                    buttonText: 'Desenvolver Habitat & Futuro',
+                    borderColor: 'border-green-400',
+                    textColor: 'text-green-400',
+                    hoverBg: 'hover:bg-green-400',
+                },
+                'Inteligência Estratégica': {
+                    buttonText: 'Analisar Inteligência Estratégica',
+                    borderColor: 'border-gray-400',
+                    textColor: 'text-gray-400',
+                    hoverBg: 'hover:bg-gray-400',
+                },
+            };
 
             return (
-                <InternalSection>
-                  <div className="text-center">
-                    <FadeIn>
-                        <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">Análise de Identidade</h1>
-                        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">Descubra o potencial do seu legado. Preencha os campos abaixo para iniciar ou gere um conceito inicial com nossa IA.</p>
-                    </FadeIn>
-                    </div>
-                    <div className="mt-12 w-full max-w-lg mx-auto">
+                <div className="w-full">
+                    <div className="w-full max-w-lg mx-auto">
                         <FadeIn delay={0.2}>
                             <form onSubmit={handleSubmit} className="bg-gray-900/50 border border-gray-700/50 rounded-lg p-8 space-y-6 text-left">
-                                <div className="space-y-2">
-                                    <label htmlFor="name" className="text-sm font-semibold text-gray-400">Nome Completo</label>
-                                    <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label htmlFor="email" className="text-sm font-semibold text-gray-400">E-mail</label>
-                                    <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label htmlFor="brand" className="text-sm font-semibold text-gray-400">Nome da Marca</label>
-                                    <input type="text" name="brand" id="brand" value={formData.brand} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label htmlFor="website" className="text-sm font-semibold text-gray-400">Website (Opcional)</label>
-                                    <input type="url" name="website" id="website" value={formData.website} onChange={handleChange} className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
-                                </div>
-                                <div className="flex flex-col sm:flex-row gap-4">
-                                    <button type="button" onClick={handleGenerateConcept} disabled={isGenerating} className="w-full flex items-center justify-center bg-transparent border border-cyan-400 text-cyan-400 font-bold py-3 px-5 rounded-full transition-all duration-300 hover:bg-cyan-400 hover:text-black disabled:opacity-50 disabled:cursor-wait">
-                                       {isGenerating ? 'Gerando...' : '✨ Gerar Conceito da Marca'}
-                                    </button>
-                                    <button type="submit" className="w-full bg-cyan-500 text-black font-bold py-3 px-8 rounded-full transition-all duration-300 hover:bg-cyan-400 hover:shadow-lg hover:shadow-cyan-400/20">Enviar para Análise</button>
-                               </div>
+                                {!generatedConcept && (
+                                    <>
+                                        <div className="space-y-2">
+                                            <label htmlFor="name" className="text-sm font-semibold text-gray-400">Cultivador(a)</label>
+                                            <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="email" className="text-sm font-semibold text-gray-400">E-mail</label>
+                                            <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                                        </div>
+                                         <div className="space-y-2">
+                                            <label htmlFor="phone" className="text-sm font-semibold text-gray-400">Telefone / Celular</label>
+                                            <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handleChange} className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="projectIdea" className="text-sm font-semibold text-gray-400">Qual é a semente do seu ecossistema?</label>
+                                            <textarea name="projectIdea" id="projectIdea" value={formData.projectIdea} onChange={handleChange} required rows="4" className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" placeholder="Ex: Uma marca de roupas sustentáveis, um condomínio inteligente..."></textarea>
+                                        </div>
+                                        <div className="space-y-1 pt-4">
+                                            <p className="text-sm font-semibold text-center text-gray-400 mb-3">Selecione o pilar de interesse para iniciar a análise conceitual:</p>
+                                            <div className="flex flex-col gap-3">
+                                                {pillar ? (
+                                                     <button type="button" onClick={() => handlePillarClick(pillar)} disabled={isGenerating || !isFormValid} className={`w-full flex items-center justify-center bg-transparent border ${pillarConfig[pillar].borderColor} ${pillarConfig[pillar].textColor} font-bold py-3 px-5 rounded-full transition-all duration-300 ${pillarConfig[pillar].hoverBg} hover:text-black disabled:opacity-50 disabled:cursor-not-allowed`}>
+                                                        {isGenerating ? 'Estruturando...' : pillarConfig[pillar].buttonText}
+                                                     </button>
+                                                ) : (
+                                                    Object.keys(pillarConfig).map(p => (
+                                                        <button key={p} type="button" onClick={() => handlePillarClick(p)} disabled={isGenerating || !isFormValid} className={`w-full flex items-center justify-center bg-transparent border ${pillarConfig[p].borderColor} ${pillarConfig[p].textColor} font-bold py-3 px-5 rounded-full transition-all duration-300 ${pillarConfig[p].hoverBg} hover:text-black disabled:opacity-50 disabled:cursor-not-allowed`}>
+                                                           {isGenerating && selectedPillar === p ? 'Estruturando...' : pillarConfig[p].buttonText}
+                                                        </button>
+                                                    ))
+                                                )}
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                                
                                 {message && (<div className={`mt-4 p-4 border rounded-md text-center text-sm ${messageStyles[message.type]}`}>{message.text}</div>)}
+
+                                {generatedConcept && (
+                                     <div className="w-full pt-4">
+                                         <button type="submit" className="w-full bg-cyan-500 text-black font-bold py-3 px-8 rounded-full transition-all duration-300 hover:bg-cyan-400 hover:shadow-lg hover:shadow-cyan-400/20">Confirmar Interesse e Enviar Dados</button>
+                                     </div>
+                                )}
                             </form>
                         </FadeIn>
                     </div>
@@ -605,19 +560,122 @@
                     {isGenerating && (
                         <div className="text-center mt-8">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400 mx-auto"></div>
-                            <p className="text-gray-400 mt-2">Nossa IA está moldando o futuro da sua marca...</p>
+                            <p className="text-gray-400 mt-2">Estruturando as bases do seu ecossistema...</p>
                         </div>
                     )}
 
                     {generatedConcept && (
                         <FadeIn delay={0.2} className="mt-12 w-full max-w-2xl mx-auto">
                            <div className="gemini-response bg-gray-900/50 rounded-lg p-8 text-left">
-                                <h2 className="text-2xl font-bold text-cyan-400 mb-4">Conceito Inicial para "{formData.brand}"</h2>
+                                <h2 className="text-2xl font-bold text-cyan-400 mb-4">Esboço Conceitual para "{formData.projectIdea.substring(0, 30)}..."</h2>
                                <div dangerouslySetInnerHTML={{ __html: marked.parse(generatedConcept) }}></div>
                            </div>
                         </FadeIn>
                     )}
+                </div>
+            );
+        };
 
+
+        const IdentidadePage = ({ navigate }) => {
+             const BenefitCard = ({ icon, title, text, alert = false }) => (
+                <div className={`bg-gray-900/50 p-6 rounded-2xl border h-full transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-2 ${alert ? 'border-red-500/30 hover:shadow-xl hover:shadow-red-500/10' : 'border-gray-700/50 hover:shadow-xl hover:shadow-cyan-500/10'}`}>
+                    <div className="flex items-center mb-3">
+                        <div className={`mr-4 ${alert ? 'text-red-400' : 'text-cyan-400'}`}>{icon}</div>
+                        <h4 className={`font-bold ${alert ? 'text-red-400' : 'text-white'}`}>{title}</h4>
+                    </div>
+                    <p className="text-gray-400 text-sm">{text}</p>
+                </div>
+            );
+            const IconExclusividade = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>;
+            const IconSeguranca = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>;
+            const IconFortalecimento = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>;
+            const IconExpansao = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 9.293a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L15 7.414V10a1 1 0 11-2 0V7.414l-1.293 1.293a1 1 0 01-1.414 0z" /></svg>;
+            const IconMonetizacao = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M12 18v-2m0 2v1m0 1v1m0-2.01M12 16v-1" /></svg>;
+            const IconAlerta = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
+
+            return (
+                <InternalSection>
+                    <div className="text-center max-w-3xl mx-auto">
+                        <FadeIn>
+                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Identidade & Legado</h1>
+                            <p className="text-lg md:text-xl text-gray-400">Arquitetamos identidades que transcendem o tempo. Construímos legados que se valorizam e perduram por gerações.</p>
+                        </FadeIn>
+                    </div>
+                     <section className="py-20 px-0">
+                        <div className="max-w-6xl mx-auto">
+                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <FadeIn delay={0.1}><BenefitCard icon={<IconExclusividade />} title="Exclusividade de Uso" text="Garante o direito legal de uso exclusivo, evitando conflitos legais." /></FadeIn>
+                                <FadeIn delay={0.2}><BenefitCard icon={<IconSeguranca />} title="Segurança Jurídica" text="Minimiza o risco de disputas legais e infrações." /></FadeIn>
+                                <FadeIn delay={0.3}><BenefitCard icon={<IconFortalecimento />} title="Fortalecimento Institucional" text="Eleva a credibilidade e a imagem da empresa, atraindo investidores e parceiros." /></FadeIn>
+                                <FadeIn delay={0.4}><BenefitCard icon={<IconExpansao />} title="Oportunidades de Expansão" text="Possibilita licenciamento e franquias." /></FadeIn>
+                                <FadeIn delay={0.5}><BenefitCard icon={<IconMonetizacao />} title="Monetização" text="Permite gerar receita com royalties e outras formas de monetização." /></FadeIn>
+                                <FadeIn delay={0.6}><BenefitCard icon={<IconAlerta />} title="Alerta Crucial" text="Sem registro, você pode ser impedido de usar o nome que construiu com tanto esforço." alert={true} /></FadeIn>
+                            </div>
+                        </div>
+                    </section>
+                     <FadeIn className="py-20 px-8 bg-gray-900/40 mt-16 rounded-2xl">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h2 className="text-3xl font-bold mb-6">Inicie a Estruturação do Seu Legado</h2>
+                            <p className="text-lg text-gray-400 mb-8">Preencha os dados abaixo para que nossos especialistas estruturem um esboço conceitual para sua identidade.</p>
+                             <AnalysisForm pillar="Identidade & Legado" />
+                        </div>
+                    </FadeIn>
+                </InternalSection>
+            );
+        };
+
+        const HabitatPage = () => {
+             return (
+                <InternalSection>
+                    <div className="text-center max-w-3xl mx-auto">
+                        <FadeIn>
+                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Habitat & Futuro</h1>
+                            <p className="text-lg md:text-xl text-gray-400">Criamos ecossistemas urbanos que integram tecnologia, sustentabilidade e bem-estar para construir o amanhã.</p>
+                        </FadeIn>
+                    </div>
+                     <FadeIn className="py-20 px-8 bg-gray-900/40 mt-16 rounded-2xl">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h2 className="text-3xl font-bold mb-6">Desenvolva a Estrutura do Seu Habitat</h2>
+                             <p className="text-lg text-gray-400 mb-8">Preencha os dados abaixo para que nossos especialistas estruturem um esboço conceitual para seu projeto de habitat.</p>
+                             <AnalysisForm pillar="Habitat & Futuro" />
+                        </div>
+                    </FadeIn>
+                </InternalSection>
+            );
+        };
+        
+        const EstrategiaPage = () => {
+            return (
+                <InternalSection>
+                    <div className="text-center max-w-3xl mx-auto">
+                        <FadeIn>
+                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Inteligência Estratégica</h1>
+                            <p className="text-lg md:text-xl text-gray-400">Oferecemos blindagem jurídica e inteligência de mercado para garantir que seu crescimento seja seguro e exponencial.</p>
+                        </FadeIn>
+                    </div>
+                     <FadeIn className="py-20 px-8 bg-gray-900/40 mt-16 rounded-2xl">
+                        <div className="max-w-4xl mx-auto text-center">
+                            <h2 className="text-3xl font-bold mb-6">Estruture sua Inteligência Estratégica</h2>
+                             <p className="text-lg text-gray-400 mb-8">Preencha os dados abaixo para que nossos especialistas identifiquem os vetores de crescimento e proteção para seu ecossistema.</p>
+                             <AnalysisForm pillar="Inteligência Estratégica" />
+                        </div>
+                    </FadeIn>
+                </InternalSection>
+            );
+        };
+
+
+        const AnalisePage = () => {
+             return (
+                <InternalSection>
+                  <div className="text-center">
+                    <FadeIn>
+                        <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">Análise de Ecossistema</h1>
+                        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">Conecte-se ao nosso ecossistema. Dê o primeiro passo para materializar o seu legado.</p>
+                    </FadeIn>
+                    <AnalysisForm />
+                    </div>
                 </InternalSection>
             );
         };
@@ -650,9 +708,9 @@
                     case 'identidade':
                         return <IdentidadePage navigate={navigate} />;
                     case 'habitat':
-                        return <HabitatPage />;
+                        return <HabitatPage navigate={navigate} />;
                     case 'estrategia':
-                        return <EstrategiaPage />;
+                        return <EstrategiaPage navigate={navigate} />;
                     case 'analise':
                         return <AnalisePage />;
                     default:
