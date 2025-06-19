@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neotropia | O Ecossistema do Futuro</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Sora -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- React -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- tsparticles for animated background -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@3.1.0/tsparticles.bundle.min.js"></script>
+    <!-- Markdown Parser -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        :root {
+            --nt-cyan: #1de9b6;
+            --nt-blue: #00bcd4;
+            --nt-green: #43e97b;
+            --nt-dark: #0a0f14;
+            --nt-light: #e5e7eb;
+        }
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Sora', sans-serif;
+            background-color: #000;
+            color: #E5E7EB;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4B5563;
+        }
+        details summary {
+            list-style: none;
+        }
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        .pillar-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            position: relative;
+        }
+        .pillar-card-content {
+            --rotate-x: 0deg;
+            --rotate-y: 0deg;
+            transform: rotateX(var(--rotate-x)) rotateY(var(--rotate-y));
+            transition: transform 0.4s ease-out;
+            will-change: transform;
+        }
+        .pillar-card-glow::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at var(--glow-x, 50%) var(--glow-y, 50%), hsla(0,0%,100%,.07), transparent 70%);
+            border-radius: inherit;
+            opacity: 0;
+            transition: opacity 0.4s ease-out;
+            will-change: opacity, background-image;
+        }
+        .pillar-card:hover .pillar-card-glow::before {
+            opacity: 1;
+        }
+        .aurora-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background: linear-gradient(120deg, #00bcd4 0%, #1de9b6 60%, #43e97b 100%);
+            opacity: 0.13;
+            animation: auroraMove 8s ease-in-out infinite alternate;
+            border-radius: 2rem;
+            filter: blur(80px) brightness(1.07);
+        }
+        @keyframes auroraMove {
+            0% { filter: blur(70px) brightness(1.05) hue-rotate(0deg); }
+            100% { filter: blur(90px) brightness(1.15) hue-rotate(18deg); }
+        }
+        /* Styling for generated content */
+        .gemini-response {
+            border: 1px solid var(--nt-cyan);
+            box-shadow: 0 0 25px rgba(29, 233, 182, 0.2);
+        }
+        .gemini-response h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--nt-cyan);
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+         .gemini-response h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--nt-green);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .gemini-response p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        .gemini-response strong {
+            color: var(--nt-light);
+        }
+        .gemini-response ul {
+            list-style-position: inside;
+            padding-left: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-bg" class="fixed inset-0 pointer-events-none -z-10"></div>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // FadeIn Animation Component
+        const FadeIn = ({ children, delay = 0, direction = 'up', className = '' }) => {
+            const [isVisible, setIsVisible] = useState(false);
+            const ref = useRef(null);
+
+            useEffect(() => {
+                const observer = new window.IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setIsVisible(true);
+                            observer.unobserve(entry.target);
+                        }
+                    },
+                    {
+                        root: null,
+                        rootMargin: '0px',
+                        threshold: 0.2
+                    }
+                );
+                if (ref.current) observer.observe(ref.current);
+                return () => { if (ref.current) observer.unobserve(ref.current); };
+            }, []);
+
+            const baseClasses = 'transition-all duration-700 ease-out';
+            const finalClassName = `${baseClasses} ${className} ${isVisible ? 'opacity-100 translate-y-0' : `opacity-0 translate-y-5`}`;
+
+            return (
+                <div ref={ref} className={finalClassName} style={{ transitionDelay: `${delay * 1000}ms` }}>
+                    {children}
+                </div>
+            );
+        };
+
+        const Header = ({ navigate }) => {
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            
+            return (
+                <header className="fixed top-0 left-0 w-full z-50 bg-black/50 backdrop-blur-md">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div className="flex justify-between items-center h-20">
+                            <div className="flex-shrink-0">
+                               <a href="#" onClick={e => { e.preventDefault(); navigate('home'); }} className="text-2xl font-extrabold text-white hover:text-cyan-400 transition-colors tracking-widest">
+                                    NEOTROPIA
+                                </a>
+                            </div>
+                            <div className="hidden md:block">
+                                <nav className="flex items-center space-x-6">
+                                    <a href="#" onClick={e => { e.preventDefault(); navigate('identidade'); }} className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
+                                        Identidade & Legado
+                                    </a>
+                                    <a href="#" onClick={e => { e.preventDefault(); navigate('habitat'); }} className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
+                                        Habitat & Futuro
+                                    </a>
+                                    <a href="#" onClick={e => { e.preventDefault(); navigate('estrategia'); }} className="text-gray-300 hover:text-white transition-colors text-sm font-medium">
+                                        Inteligência Estratégica
+                                    </a>
+                                    <a href="#" onClick={e => { e.preventDefault(); navigate('analise'); }} className="bg-gray-800 text-white font-bold py-2 px-5 rounded-full text-sm hover:bg-cyan-400 hover:text-black transition-all duration-300 shadow-sm">
+                                        Iniciar Análise
+                                    </a>
+                                </nav>
+                            </div>
+                            <div className="md:hidden flex items-center">
+                                <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                                    <span className="sr-only">Open main menu</span>
+                                    {isMenuOpen ? (
+                                        <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    ) : (
+                                        <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                                        </svg>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                     {isMenuOpen && (
+                        <div className="md:hidden">
+                            <nav className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-center">
+                                <a href="#" onClick={e => { e.preventDefault(); navigate('identidade'); setIsMenuOpen(false); }} className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                                    Identidade & Legado
+                                </a>
+                                <a href="#" onClick={e => { e.preventDefault(); navigate('habitat'); setIsMenuOpen(false);}} className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                                    Habitat & Futuro
+                                </a>
+                                <a href="#" onClick={e => { e.preventDefault(); navigate('estrategia'); setIsMenuOpen(false);}} className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+                                    Inteligência Estratégica
+                                </a>
+                                <a href="#" onClick={e => { e.preventDefault(); navigate('analise'); setIsMenuOpen(false);}} className="text-cyan-400 hover:bg-gray-700 hover:text-white block px-3 py-3 rounded-md text-base font-bold">
+                                    Iniciar Análise
+                                </a>
+                            </nav>
+                        </div>
+                    )}
+                    <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
+                </header>
+            );
+        };
+
+        const PillarCard = ({ title, description, status, link, navigate, colorClass }) => {
+            const cardRef = useRef(null);
+            const isActionable = status === 'active';
+
+            useEffect(() => {
+                const card = cardRef.current;
+                if (!card || !isActionable) return;
+
+                const handleMouseMove = (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 25;
+                    const rotateY = (centerX - x) / 25;
+
+                    card.style.setProperty('--rotate-x', `${rotateX}deg`);
+                    card.style.setProperty('--rotate-y', `${rotateY}deg`);
+                    card.style.setProperty('--glow-x', `${x}px`);
+                    card.style.setProperty('--glow-y', `${y}px`);
+                };
+
+                const handleMouseLeave = () => {
+                    card.style.setProperty('--rotate-x', '0deg');
+                    card.style.setProperty('--rotate-y', '0deg');
+                };
+
+                card.addEventListener('mousemove', handleMouseMove);
+                card.addEventListener('mouseleave', handleMouseLeave);
+
+                return () => {
+                    card.removeEventListener('mousemove', handleMouseMove);
+                    card.removeEventListener('mouseleave', handleMouseLeave);
+                };
+            }, [isActionable]);
+
+            const content = (
+                <div ref={cardRef} className="pillar-card-content h-full bg-gray-900/60 p-8 rounded-2xl border border-gray-800 shadow-md hover:shadow-xl hover:border-cyan-400/60 flex flex-col pillar-card-glow transition-all">
+                    <div style={{ transform: 'translateZ(20px)' }}>
+                        <div className="mb-6 w-full bg-gray-800/60 border border-gray-700/80 rounded-lg flex items-center justify-center py-4">
+                            <h3 className={`text-lg font-extrabold text-center px-4 bg-gradient-to-r from-cyan-400 via-white to-green-400 bg-clip-text text-transparent ${colorClass}`}>{title}</h3>
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-grow" style={{ transform: 'translateZ(10px)' }}>
+                        <div className="text-base flex-grow">{description}</div>
+                    </div>
+                    <div className="mt-8" style={{ transform: 'translateZ(20px)' }}>
+                        {isActionable ? (
+                            <span className="font-semibold text-cyan-400 group-hover:text-white transition-colors duration-300">
+                                Explorar Ecossistema <span className="transition-all ml-1 duration-300 group-hover:ml-2">→</span>
+                            </span>
+                        ) : (
+                            <span className="font-semibold text-gray-500">Em Breve</span>
+                        )}
+                    </div>
+                </div>
+            );
+
+            return (
+                <div className={`pillar-card h-full group ${!isActionable ? 'opacity-60 cursor-not-allowed' : ''}`}>
+                    {isActionable ? <a href="#" onClick={e => { e.preventDefault(); navigate(link); }} className="h-full block">{content}</a> : <div className="h-full">{content}</div>}
+                </div>
+            );
+        };
+
+        const HomePage = ({ navigate }) => {
+            useEffect(() => {
+                const particlesEl = document.getElementById("particles-bg");
+                if (particlesEl) particlesEl.style.display = "block";
+                loadParticlesIfHome();
+            }, []);
+            return (
+                <>
+                    <section className="relative overflow-hidden text-center pt-40 pb-24 md:pt-48 md:pb-40 px-8 bg-black">
+                        <div className="relative z-10 max-w-4xl mx-auto">
+                            <FadeIn>
+                                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
+                                    Juntos, transformamos <span className="text-cyan-400">possibilidades em realidades.</span>
+                                </h1>
+                            </FadeIn>
+                            <FadeIn delay={0.25}>
+                                <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-light">
+                                    Neotropia: Transformando o futuro. Inspirando o agora.
+                                </p>
+                            </FadeIn>
+                            <FadeIn delay={0.5}>
+                                <a
+                                    href="#"
+                                    onClick={e => { e.preventDefault(); navigate('analise'); }}
+                                    className="mt-10 inline-block bg-cyan-400 text-black font-bold py-4 px-10 rounded-full text-lg transition-all duration-300 hover:bg-white hover:text-black hover:scale-105 shadow-lg shadow-cyan-400/10"
+                                >
+                                    Iniciar Análise de Identidade
+                                </a>
+                            </FadeIn>
+                        </div>
+                    </section>
+                    <section className="py-20 px-8">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="text-center mb-16">
+                                <FadeIn>
+                                    <h2 className="text-4xl font-bold mb-4">Nossos Ecossistemas</h2>
+                                    <p className="text-gray-400 max-w-2xl mx-auto">Cada pilar é uma porta de entrada para um universo de soluções integradas, projetadas para criar valor perpétuo.</p>
+                                </FadeIn>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <FadeIn delay={0.2} className="h-full">
+                                    <PillarCard
+                                        title="Identidade & Legado"
+                                        colorClass="text-cyan-400"
+                                        description={<>
+                                            <p className="font-semibold text-gray-300">Registro de Marca, Design de Logotipos.</p>
+                                            <div className="h-px my-3 bg-gradient-to-r from-transparent via-cyan-600 to-transparent opacity-70"></div>
+                                            <p className="text-gray-400 leading-relaxed">Transformando nomes e ideais em ativos perpétuos e protegidos.</p>
+                                        </>}
+                                        status="active"
+                                        link="identidade"
+                                        navigate={navigate}
+                                    />
+                                </FadeIn>
+                                <FadeIn delay={0.4} className="h-full">
+                                    <PillarCard
+                                        title="Habitat & Futuro"
+                                        colorClass="text-green-400"
+                                        description={<>
+                                            <p className="font-semibold text-gray-300">Incorporação Imobiliária.</p>
+                                            <div className="h-px my-3 bg-gradient-to-r from-transparent via-green-600 to-transparent opacity-70"></div>
+                                            <p className="text-gray-400 leading-relaxed">Ecossistemas urbanos, tecnológicos, sustentabilidade e bem-estar.</p>
+                                        </>}
+                                        status="active"
+                                        link="habitat"
+                                        navigate={navigate}
+                                    />
+                                </FadeIn>
+                                <FadeIn delay={0.6} className="h-full">
+                                    <PillarCard
+                                        title="Inteligência Estratégica"
+                                        colorClass="text-gray-300"
+                                        description={<>
+                                            <p className="font-semibold text-gray-300">Área Jurídica.</p>
+                                            <div className="h-px my-3 bg-gradient-to-r from-transparent via-gray-600 to-transparent opacity-70"></div>
+                                            <p className="text-gray-400 leading-relaxed">Blindagem e inteligência para crescimento seguro.</p>
+                                        </>}
+                                        status="active"
+                                        link="estrategia"
+                                        navigate={navigate}
+                                    />
+                                </FadeIn>
+                            </div>
+                        </div>
+                    </section>
+                </>
+            );
+        };
+
+        const InternalSection = ({ children }) => (
+            <section className="relative min-h-[40vh] py-20 px-8 bg-black">
+                <div className="aurora-bg"></div>
+                <div className="relative z-10">{children}</div>
+            </section>
+        );
+
+        const IdentidadePage = ({ navigate }) => {
+            const BenefitCard = ({ icon, title, text, alert = false }) => (
+                <div className={`bg-gray-900/50 p-6 rounded-2xl border h-full transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-2 ${alert ? 'border-red-500/30 hover:shadow-xl hover:shadow-red-500/10' : 'border-gray-700/50 hover:shadow-xl hover:shadow-cyan-500/10'}`}>
+                    <div className="flex items-center mb-3">
+                        <div className={`mr-4 ${alert ? 'text-red-400' : 'text-cyan-400'}`}>{icon}</div>
+                        <h4 className={`font-bold ${alert ? 'text-red-400' : 'text-white'}`}>{title}</h4>
+                    </div>
+                    <p className="text-gray-400 text-sm">{text}</p>
+                </div>
+            );
+            const IconExclusividade = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>;
+            const IconSeguranca = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>;
+            const IconFortalecimento = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>;
+            const IconExpansao = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2h10a2 2 0 002-2v-1a2 2 0 012-2h1.945M7.707 9.293a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L15 7.414V10a1 1 0 11-2 0V7.414l-1.293 1.293a1 1 0 01-1.414 0z" /></svg>;
+            const IconMonetizacao = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2.01M12 18v-2m0 2v1m0 1v1m0-2.01M12 16v-1" /></svg>;
+            const IconAlerta = () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>;
+
+            return (
+                <InternalSection>
+                    <div className="text-center">
+                        <FadeIn>
+                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Identidade & Legado</h1>
+                            <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">Arquitetamos identidades que transcendem o tempo. Construímos legados que se valorizam e perduram por gerações.</p>
+                        </FadeIn>
+                    </div>
+                    <section className="py-20 px-0">
+                        <div className="max-w-6xl mx-auto">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <FadeIn delay={0.1}><BenefitCard icon={<IconExclusividade />} title="Exclusividade de Uso" text="Garante o direito legal de uso exclusivo, evitando conflitos legais." /></FadeIn>
+                                <FadeIn delay={0.2}><BenefitCard icon={<IconSeguranca />} title="Segurança Jurídica" text="Minimiza o risco de disputas legais e infrações." /></FadeIn>
+                                <FadeIn delay={0.3}><BenefitCard icon={<IconFortalecimento />} title="Fortalecimento Institucional" text="Eleva a credibilidade e a imagem da empresa, atraindo investidores e parceiros." /></FadeIn>
+                                <FadeIn delay={0.4}><BenefitCard icon={<IconExpansao />} title="Oportunidades de Expansão" text="Possibilita licenciamento e franquias." /></FadeIn>
+                                <FadeIn delay={0.5}><BenefitCard icon={<IconMonetizacao />} title="Monetização" text="Permite gerar receita com royalties e outras formas de monetização." /></FadeIn>
+                                <FadeIn delay={0.6}><BenefitCard icon={<IconAlerta />} title="Alerta Crucial" text="Sem registro, você pode ser impedido de usar o nome que construiu com tanto esforço." alert={true} /></FadeIn>
+                            </div>
+                        </div>
+                    </section>
+                    <FadeIn>
+                      <div className="py-20 px-8 bg-gray-900/40 rounded-2xl">
+                          <div className="max-w-4xl mx-auto text-center">
+                              <h2 className="text-3xl font-bold mb-6">A Identidade como Núcleo do Legado</h2>
+                              <div className="text-gray-300 space-y-4 text-lg">
+                                  <p>No ecossistema Neotropia, a identidade é o código-fonte do legado. É o ativo intangível que ancora o valor e dita o potencial de expansão de um projeto. Em um mercado de ruído constante, a clareza e a proteção da identidade não são defensivas; são a principal estratégia ofensiva. Nós não apenas registramos marcas; nós blindamos futuros.</p>
+                              </div>
+                          </div>
+                      </div>
+                    </FadeIn>
+                    <FadeIn>
+                      <div className="text-center py-24 px-8">
+                          <h2 className="text-4xl font-bold text-white mb-4">Pronto para fundar seu legado?</h2>
+                          <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-8">Nossa análise inicial é o primeiro passo para entender o potencial da sua identidade e mapear as oportunidades de futuro.</p>
+                          <a href="#" onClick={e => { e.preventDefault(); navigate('analise'); }} className="bg-white text-black font-bold py-4 px-10 rounded-full transition-all duration-300 ease-in-out hover:bg-cyan-400 hover:shadow-lg hover:shadow-cyan-400/20 transform hover:scale-105 inline-block">
+                              Iniciar Análise de Identidade
+                          </a>
+                      </div>
+                    </FadeIn>
+                </InternalSection>
+            );
+        };
+
+        const GenericPage = ({ title, subtitle, children }) => (
+            <InternalSection>
+              <div className="text-center">
+                <FadeIn>
+                    <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">{title}</h1>
+                    <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">{subtitle}</p>
+                </FadeIn>
+                {children && <div className="mt-12 w-full max-w-4xl mx-auto">{children}</div>}
+              </div>
+            </InternalSection>
+        );
+        const HabitatPage = () => (
+            <GenericPage
+                title="Em breve"
+                subtitle="Estamos cultivando um novo ecossistema. Retorne em breve para vivenciar mais uma experiência Neotropia."
+            />
+        );
+        const EstrategiaPage = () => (
+            <GenericPage
+                title="Em breve"
+                subtitle="Estamos cultivando um novo ecossistema. Retorne em breve para vivenciar mais uma experiência Neotropia."
+            />
+        );
+
+        const AnalisePage = () => {
+            const [formData, setFormData] = useState({ name: '', email: '', brand: '', website: '' });
+            const [message, setMessage] = useState(null);
+            const [generatedConcept, setGeneratedConcept] = useState('');
+            const [isGenerating, setIsGenerating] = useState(false);
+
+            const handleChange = (e) => setFormData({...formData, [e.target.name]: e.target.value });
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setMessage({ type: 'info', text: 'Enviando análise...' });
+                setTimeout(() => {
+                    if (!formData.name || !formData.email || !formData.brand) {
+                        setMessage({ type: 'error', text: 'Dados inválidos. Por favor, preencha todos os campos obrigatórios.' });
+                    } else {
+                        setMessage({ type: 'success', text: 'Análise recebida com sucesso! Entraremos em contato em breve.' });
+                        setFormData({ name: '', email: '', brand: '', website: '' });
+                        setGeneratedConcept('');
+                    }
+                }, 1000);
+            };
+            
+            const handleGenerateConcept = async () => {
+                if (!formData.brand) {
+                    setMessage({ type: 'error', text: 'Por favor, insira o nome da marca para gerar um conceito.' });
+                    return;
+                }
+                setIsGenerating(true);
+                setGeneratedConcept('');
+                setMessage(null);
+
+                const prompt = `
+                    Você é um estrategista de marca sênior na Neotropia, uma consultoria de ecossistemas de negócios futurista e inovadora.
+                    Sua tarefa é criar um conceito inicial inspirador para uma nova marca chamada "${formData.brand}".
+                    Este conceito deve ser conciso, poderoso e alinhado com a filosofia da Neotropia de construir legados perpétuos e ecossistemas integrados.
+                    Por favor, gere o seguinte, em português do Brasil, usando Markdown para formatação:
+                    - **Conceito da Marca:** Um parágrafo curto e impactante que define a essência da marca.
+                    - **Missão:** Uma declaração clara do propósito da marca.
+                    - **Visão:** Uma declaração aspiracional de onde a marca quer chegar no futuro.
+                `;
+
+                try {
+                    let chatHistory = [];
+                    chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                    const payload = { contents: chatHistory };
+                    const apiKey = ""; 
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                    
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        setGeneratedConcept(text);
+                    } else {
+                        throw new Error("Resposta da API inválida ou vazia.");
+                    }
+
+                } catch (error) {
+                    console.error("Erro ao gerar conceito:", error);
+                    setMessage({ type: 'error', text: 'Não foi possível gerar o conceito. Tente novamente.' });
+                } finally {
+                    setIsGenerating(false);
+                }
+            };
+
+            const messageStyles = {
+                success: 'bg-green-500/10 border-green-500/50 text-green-300',
+                error: 'bg-red-500/10 border-red-500/50 text-red-300',
+                info: 'bg-blue-500/10 border-blue-500/50 text-blue-300',
+            };
+
+            return (
+                <InternalSection>
+                  <div className="text-center">
+                    <FadeIn>
+                        <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4">Análise de Identidade</h1>
+                        <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto">Descubra o potencial do seu legado. Preencha os campos abaixo para iniciar ou gere um conceito inicial com nossa IA.</p>
+                    </FadeIn>
+                    </div>
+                    <div className="mt-12 w-full max-w-lg mx-auto">
+                        <FadeIn delay={0.2}>
+                            <form onSubmit={handleSubmit} className="bg-gray-900/50 border border-gray-700/50 rounded-lg p-8 space-y-6 text-left">
+                                <div className="space-y-2">
+                                    <label htmlFor="name" className="text-sm font-semibold text-gray-400">Nome Completo</label>
+                                    <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="email" className="text-sm font-semibold text-gray-400">E-mail</label>
+                                    <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="brand" className="text-sm font-semibold text-gray-400">Nome da Marca</label>
+                                    <input type="text" name="brand" id="brand" value={formData.brand} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label htmlFor="website" className="text-sm font-semibold text-gray-400">Website (Opcional)</label>
+                                    <input type="url" name="website" id="website" value={formData.website} onChange={handleChange} className="w-full bg-gray-800 border border-gray-600 rounded-md px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400" />
+                                </div>
+                                <div className="flex flex-col sm:flex-row gap-4">
+                                    <button type="button" onClick={handleGenerateConcept} disabled={isGenerating} className="w-full flex items-center justify-center bg-transparent border border-cyan-400 text-cyan-400 font-bold py-3 px-5 rounded-full transition-all duration-300 hover:bg-cyan-400 hover:text-black disabled:opacity-50 disabled:cursor-wait">
+                                       {isGenerating ? 'Gerando...' : '✨ Gerar Conceito da Marca'}
+                                    </button>
+                                    <button type="submit" className="w-full bg-cyan-500 text-black font-bold py-3 px-8 rounded-full transition-all duration-300 hover:bg-cyan-400 hover:shadow-lg hover:shadow-cyan-400/20">Enviar para Análise</button>
+                               </div>
+                                {message && (<div className={`mt-4 p-4 border rounded-md text-center text-sm ${messageStyles[message.type]}`}>{message.text}</div>)}
+                            </form>
+                        </FadeIn>
+                    </div>
+
+                    {isGenerating && (
+                        <div className="text-center mt-8">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400 mx-auto"></div>
+                            <p className="text-gray-400 mt-2">Nossa IA está moldando o futuro da sua marca...</p>
+                        </div>
+                    )}
+
+                    {generatedConcept && (
+                        <FadeIn delay={0.2} className="mt-12 w-full max-w-2xl mx-auto">
+                           <div className="gemini-response bg-gray-900/50 rounded-lg p-8 text-left">
+                                <h2 className="text-2xl font-bold text-cyan-400 mb-4">Conceito Inicial para "{formData.brand}"</h2>
+                               <div dangerouslySetInnerHTML={{ __html: marked.parse(generatedConcept) }}></div>
+                           </div>
+                        </FadeIn>
+                    )}
+
+                </InternalSection>
+            );
+        };
+
+        const App = () => {
+            const [currentPage, setCurrentPage] = useState('home');
+            
+            useEffect(() => {
+                const particlesBg = document.getElementById("particles-bg");
+                const canvas = particlesBg.querySelector("canvas");
+                if (canvas) canvas.remove();
+
+                if (currentPage === 'home') {
+                    particlesBg.style.display = "block";
+                    loadParticlesIfHome();
+                } else {
+                    particlesBg.style.display = "none";
+                }
+            }, [currentPage]);
+
+            const navigate = (page) => {
+                setCurrentPage(page);
+                window.scrollTo(0, 0);
+            };
+
+            const renderPage = () => {
+                switch (currentPage) {
+                    case 'home':
+                        return <HomePage navigate={navigate} />;
+                    case 'identidade':
+                        return <IdentidadePage navigate={navigate} />;
+                    case 'habitat':
+                        return <HabitatPage />;
+                    case 'estrategia':
+                        return <EstrategiaPage />;
+                    case 'analise':
+                        return <AnalisePage />;
+                    default:
+                        return <HomePage navigate={navigate} />;
+                }
+            };
+
+            return (
+                <>
+                    <Header navigate={navigate} />
+                    <main className="pt-20">
+                        {renderPage()}
+                    </main>
+                    <footer className="bg-black border-t border-gray-800 py-10 px-8 mt-20">
+                        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-gray-500 text-sm text-center md:text-left">
+                            <span>
+                                © 2025 NEOTROPIA. Todos os direitos reservados.
+                            </span>
+                            <span className="tracking-widest text-gray-700">
+                                Salvador, Bahia • Ecossistema do Futuro
+                            </span>
+                        </div>
+                    </footer>
+                </>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+        function loadParticlesIfHome() {
+            const container = document.getElementById("particles-bg");
+            if (container && container.style.display !== "none") {
+                if (container.querySelector("canvas")) return;
+                
+                tsParticles.load("particles-bg", {
+                    background: { color: "#000" },
+                    particles: {
+                        number: { value: 38, density: { enable: true, value_area: 1000 } },
+                        color: { value: ["#1de9b6", "#00bcd4", "#43e97b", "#fff"] },
+                        shape: { type: "circle" },
+                        opacity: { value: {min: 0.05, max: 0.15}, animation: { enable: true, speed: 1, minimumValue: 0.05} },
+                        size: { value: {min: 20, max: 50} },
+                        move: { enable: true, speed: 1.2, direction: "none", outModes: { default: "out" } },
+                    },
+                    interactivity: {
+                        events: { onHover: { enable: true, mode: "repulse" }, resize: true },
+                        modes: { repulse: { distance: 130, duration: 0.6 } },
+                    },
+                    detectRetina: true
+                });
+            }
+        }
+        
+        window.addEventListener('DOMContentLoaded', () => {
+        });
+
+    </script>
+</body>
+</html>
