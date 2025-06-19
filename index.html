@@ -313,12 +313,12 @@
                         <div className="relative z-10 max-w-4xl mx-auto">
                             <FadeIn>
                                 <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight">
-                                    Juntos, transformamos <span className="text-cyan-400">possibilidades em realidades.</span>
+                                    Arquitetando os <span className="text-cyan-400">Ecossistemas do Futuro.</span>
                                 </h1>
                             </FadeIn>
                             <FadeIn delay={0.25}>
                                 <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-light">
-                                    Neotropia: Transformando o futuro. Inspirando o agora.
+                                    Uma intersecção entre tecnologia, natureza e design com propósito, construindo valor perpétuo para marcas, habitats e negócios.
                                 </p>
                             </FadeIn>
                             <FadeIn delay={0.5}>
@@ -332,6 +332,7 @@
                             </FadeIn>
                         </div>
                     </section>
+
                     <section className="py-20 px-8">
                         <div className="max-w-7xl mx-auto">
                             <div className="text-center mb-16">
@@ -438,7 +439,7 @@
                     default:
                         prompt = `Gere um conceito geral para o projeto: "${formData.projectIdea}".`;
                 }
-
+                
                 try {
                     let chatHistory = [];
                     chatHistory.push({ role: "user", parts: [{ text: prompt }] });
@@ -576,7 +577,6 @@
             );
         };
 
-
         const IdentidadePage = ({ navigate }) => {
              const BenefitCard = ({ icon, title, text, alert = false }) => (
                 <div className={`bg-gray-900/50 p-6 rounded-2xl border h-full transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-2 ${alert ? 'border-red-500/30 hover:shadow-xl hover:shadow-red-500/10' : 'border-gray-700/50 hover:shadow-xl hover:shadow-cyan-500/10'}`}>
@@ -598,7 +598,7 @@
                 <InternalSection>
                     <div className="text-center max-w-3xl mx-auto">
                         <FadeIn>
-                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Identidade & Legado</h1>
+                             <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Sua marca não é um nome. <span className="text-cyan-400">É um ativo perpétuo.</span></h1>
                             <p className="text-lg md:text-xl text-gray-400">Arquitetamos identidades que transcendem o tempo. Construímos legados que se valorizam e perduram por gerações.</p>
                         </FadeIn>
                     </div>
@@ -614,6 +614,18 @@
                             </div>
                         </div>
                     </section>
+
+                    <FadeIn>
+                        <div className="my-16 text-center max-w-3xl mx-auto">
+                            <h2 className="text-4xl font-bold mb-4 text-white">
+                                O maior risco não é ser copiado. É nunca alcançar seu valor máximo.
+                            </h2>
+                            <p className="text-lg text-gray-400">
+                                Uma identidade sem fundação estratégica nasce com seu potencial diluído. Cada dia sem proteção não é apenas um convite à cópia — é a erosão silenciosa do seu ativo mais valioso. No cenário atual, marcas despreparadas não competem. Elas se dissolvem.
+                            </p>
+                        </div>
+                    </FadeIn>
+
                      <FadeIn className="py-20 px-8 bg-gray-900/40 mt-16 rounded-2xl">
                         <div className="max-w-4xl mx-auto text-center">
                             <h2 className="text-3xl font-bold mb-6">Inicie a Estruturação do Seu Legado</h2>
@@ -625,19 +637,133 @@
             );
         };
 
-        const HabitatPage = () => {
+        const HabitatPage = ({ navigate }) => {
+            const [selectedCategory, setSelectedCategory] = useState('Todos');
+
+            const BenefitCard = ({ icon, title, text }) => (
+                <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-700/50 h-full transition-all duration-300 ease-in-out hover:scale-105 hover:-translate-y-2 hover:shadow-xl hover:shadow-green-400/10">
+                    <div className="flex items-center mb-4">
+                        <div className="mr-4 text-green-400">{icon}</div>
+                        <h4 className="font-bold text-white">{title}</h4>
+                    </div>
+                    <p className="text-gray-400 text-sm">{text}</p>
+                </div>
+            );
+
+            const ProjectCard = ({ project }) => (
+                 <div className="bg-gray-900/50 rounded-lg overflow-hidden group">
+                    <div className="overflow-hidden">
+                      <img src={project.image} alt={project.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
+                    </div>
+                    <div className="p-6">
+                        <h3 className="font-bold text-xl">{project.name}</h3>
+                        <p className="text-gray-400">{project.location}</p>
+                        <p className="text-sm font-bold mt-2 text-green-400">{project.status}</p>
+                    </div>
+                </div>
+            );
+
+            const IconBio = () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V6a1 1 0 011-1h2a1 1 0 011 1v10a1 1 0 01-1 1h-1m-6-4h4m5 0h1" /></svg>;
+            const IconTech = () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6a2 2 0 100-4 2 2 0 000 4zm0 14a2 2 0 100-4 2 2 0 000 4zm6-8a2 2 0 100-4 2 2 0 000 4zm-12 0a2 2 0 100-4 2 2 0 000 4z" /></svg>;
+            const IconCommunity = () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>;
+            const IconAsset = () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>;
+
+            const categories = ['Todos', 'Habitats Verticais', 'Ecossistemas de Negócios', 'Territórios Inteligentes', 'Vilas Regenerativas', 'Distritos Planejados', 'Laboratórios de Futuro'];
+            const projects = [
+                { 
+                    name: 'Habitat Vertical [Protótipo Alfa]', 
+                    location: 'Cidade, Estado', 
+                    status: 'Em Germinação', 
+                    category: 'Habitats Verticais', 
+                    image: 'https://placehold.co/600x400/0a0f14/1de9b6?text=HV-α' 
+                },
+                { 
+                    name: 'Ecossistema de Negócios [Conceito I]', 
+                    location: 'Cidade, Estado', 
+                    status: 'Em Germinação', 
+                    category: 'Ecossistemas de Negócios', 
+                    image: 'https://placehold.co/600x400/0a0f14/e5e7eb?text=EN-I' 
+                },
+                { 
+                    name: 'Vila Regenerativa [Estudo de Caso]', 
+                    location: 'Cidade, Estado', 
+                    status: 'Em Germinação', 
+                    category: 'Vilas Regenerativas', 
+                    image: 'https://placehold.co/600x400/0a0f14/43e97b?text=VR-β' 
+                },
+                { 
+                    name: 'Distrito Planejado [Visão 2030]', 
+                    location: 'Cidade, Estado', 
+                    status: 'Em Germinação', 
+                    category: 'Distritos Planejados', 
+                    image: 'https://placehold.co/600x400/0a0f14/00bcd4?text=DP-2030' 
+                },
+                { 
+                    name: 'Laboratório de Futuro [Em Operação]', 
+                    location: 'Cidade, Estado', 
+                    status: 'Em Germinação', 
+                    category: 'Laboratórios de Futuro', 
+                    image: 'https://placehold.co/600x400/0a0f14/e5e7eb?text=LAB-Δ' 
+                },
+                { 
+                    name: 'Território Inteligente [Modelo Delta]', 
+                    location: 'Cidade, Estado', 
+                    status: 'Em Germinação', 
+                    category: 'Territórios Inteligentes', 
+                    image: 'https://placehold.co/600x400/0a0f14/1de9b6?text=TI-Δ' 
+                },
+            ];
+            
+            const filteredProjects = selectedCategory === 'Todos' ? projects : projects.filter(p => p.category === selectedCategory);
+
              return (
                 <InternalSection>
                     <div className="text-center max-w-3xl mx-auto">
                         <FadeIn>
-                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Habitat & Futuro</h1>
-                            <p className="text-lg md:text-xl text-gray-400">Criamos ecossistemas urbanos que integram tecnologia, sustentabilidade e bem-estar para construir o amanhã.</p>
+                            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight mb-4">Não Construímos Prédios. <span className="text-green-400">Cultivamos Habitats.</span></h1>
+                            <p className="text-lg md:text-xl text-gray-400">Na Neotropia, a incorporação imobiliária transcende o concreto. Projetamos e desenvolvemos ecossistemas residenciais e comerciais onde a bio-arquitetura, a tecnologia de ponta e o design centrado no bem-estar se integram para criar ativos de valor perpétuo e uma qualidade de vida sem precedentes.</p>
                         </FadeIn>
                     </div>
+                     
+                    <section className="py-20 px-0">
+                        <div className="max-w-6xl mx-auto">
+                           <h2 className="text-3xl font-bold text-center mb-12">A Anatomia de um Ecossistema Neotropia</h2>
+                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <FadeIn delay={0.1}><BenefitCard icon={<IconBio />} title="Design Biofílico & Regenerativo" text="Nossos projetos integram elementos naturais, otimizam a luz e a ventilação, e utilizam materiais sustentáveis. O objetivo não é apenas reduzir o impacto, mas regenerar o ambiente ao redor." /></FadeIn>
+                                <FadeIn delay={0.2}><BenefitCard icon={<IconTech />} title="Inteligência Ambiental Integrada" text="Cada habitat é equipado com uma infraestrutura tecnológica que aprende e se adapta. Gestão autônoma de energia, água e segurança, proporcionando uma experiência de vida fluida e eficiente." /></FadeIn>
+                                <FadeIn delay={0.3}><BenefitCard icon={<IconCommunity />} title="Arquitetura para a Comunidade" text="Desenhamos espaços que incentivam a conexão humana. Áreas comuns, hubs de trabalho, jardins produtivos e zonas de lazer que transformam vizinhos em uma comunidade próspera e colaborativa." /></FadeIn>
+                                <FadeIn delay={0.4}><BenefitCard icon={<IconAsset />} title="Ativos Vivos de Alta Performance" text="Um imóvel Neotropia não é um passivo. É um ativo que se valoriza através da eficiência energética, da tecnologia atualizável e do design atemporal, garantindo um retorno financeiro e de bem-estar superior." /></FadeIn>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="py-20 px-0">
+                        <div className="max-w-7xl mx-auto">
+                            <h2 className="text-3xl font-bold text-center mb-12">Nosso Portfólio Visionário</h2>
+                            <div className="flex justify-center flex-wrap gap-2 mb-12">
+                                {categories.map(category => (
+                                    <button 
+                                        key={category} 
+                                        onClick={() => setSelectedCategory(category)}
+                                        className={`px-5 py-2 text-sm font-semibold rounded-full transition-colors duration-300 ${selectedCategory === category ? 'bg-green-400 text-black' : 'bg-gray-800 text-gray-300 hover:bg-gray-700'}`}>
+                                        {category}
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {filteredProjects.map((project, index) => (
+                                    <FadeIn key={project.name} delay={index * 0.1}>
+                                        <ProjectCard project={project} />
+                                    </FadeIn>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
                      <FadeIn className="py-20 px-8 bg-gray-900/40 mt-16 rounded-2xl">
                         <div className="max-w-4xl mx-auto text-center">
-                            <h2 className="text-3xl font-bold mb-6">Desenvolva a Estrutura do Seu Habitat</h2>
-                             <p className="text-lg text-gray-400 mb-8">Preencha os dados abaixo para que nossos especialistas estruturem um esboço conceitual para seu projeto de habitat.</p>
+                            <h2 className="text-3xl font-bold mb-6">Vamos Materializar o Seu Ecossistema.</h2>
+                            <p className="text-lg text-gray-400 mb-8">Acreditamos na co-criação. O formulário abaixo não é um simples canal de contato; é um instrumento de prototipagem conceitual. Insira a 'semente' do seu projeto e nosso sistema irá gerar um esboço preliminar, identificando potenciais e diretrizes de sustentabilidade. É o primeiro passo para transformar sua visão em um ativo tangível.</p>
                              <AnalysisForm pillar="Habitat & Futuro" />
                         </div>
                     </FadeIn>
